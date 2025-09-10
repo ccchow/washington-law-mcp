@@ -1,0 +1,45 @@
+{
+  "name": "washington-law-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Washington State RCW and WAC laws with local database",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "washington-law-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "scrape:rcw": "tsx src/scraper/rcw-scraper.ts",
+    "scrape:wac": "tsx src/scraper/wac-scraper.ts",
+    "init:db": "tsx src/database/init.ts",
+    "update:laws": "tsx scripts/update-laws.ts",
+    "test": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "washington",
+    "law",
+    "rcw",
+    "wac",
+    "legal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.7.9",
+    "better-sqlite3": "^11.5.0",
+    "cheerio": "^1.0.0",
+    "p-limit": "^6.1.0",
+    "pdfjs-dist": "^5.4.149"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

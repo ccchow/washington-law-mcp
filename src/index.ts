@@ -62,14 +62,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_court_rule',
-        description: 'Retrieve the full text of a specific court rule (IRLJ or CRLJ) by rule set and number',
+        description: 'Retrieve the full text of a specific court rule (IRLJ, CRLJ, or RPC) by rule set and number',
         inputSchema: {
           type: 'object',
           properties: {
             ruleSet: {
               type: 'string',
-              description: 'Rule set (e.g., "IRLJ" or "CRLJ")',
-              enum: ['IRLJ', 'CRLJ'],
+              description: 'Rule set (e.g., "IRLJ", "CRLJ", or "RPC")',
+              enum: ['IRLJ', 'CRLJ', 'RPC'],
             },
             ruleNumber: {
               type: 'string',
@@ -87,8 +87,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             ruleSet: {
               type: 'string',
-              description: 'Optional: Filter by rule set (IRLJ or CRLJ)',
-              enum: ['IRLJ', 'CRLJ'],
+              description: 'Optional: Filter by rule set (IRLJ, CRLJ, or RPC)',
+              enum: ['IRLJ', 'CRLJ', 'RPC'],
             },
           },
         },
@@ -109,7 +109,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'search_laws',
-        description: 'Search Washington laws (RCW and WAC) by keywords or phrases',
+        description: 'Search Washington laws (RCW, WAC, and Court Rules including RPC) by keywords or phrases',
         inputSchema: {
           type: 'object',
           properties: {

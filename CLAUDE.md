@@ -21,6 +21,7 @@ sqlite3 data/washington-laws.db  # Direct database access
 ### Data Collection (Scrapers)
 ```bash
 npm run scrape:rcw     # Scrape RCW laws (uses simple-rcw-scraper.ts)
+npm run scrape:rpc     # Scrape RPC (Rules of Professional Conduct) PDFs
 npx tsx src/scraper/court-rules-pdf-scraper-v2.ts  # Scrape IRLJ/CRLJ court rules PDFs
 ```
 
@@ -36,7 +37,7 @@ sqlite3 data/washington-laws.db "SELECT rule_set, rule_number, rule_name FROM co
 ## Architecture Overview
 
 ### MCP Server Architecture
-The system implements a Model Context Protocol (MCP) server that provides offline access to Washington State laws (RCW, WAC, and Court Rules). The architecture ensures complete offline operation after initial data collection.
+The system implements a Model Context Protocol (MCP) server that provides offline access to Washington State laws (RCW, WAC, and Court Rules including RPC). The architecture ensures complete offline operation after initial data collection.
 
 **Key Design Principles:**
 - All law texts are persisted locally in SQLite (no runtime web/API calls)
@@ -59,7 +60,7 @@ The system implements a Model Context Protocol (MCP) server that provides offlin
 ### Database Schema
 Four main tables with Full-Text Search:
 - `rcw`: RCW sections with citation, title/chapter/section hierarchy, full_text
-- `court_rules`: IRLJ/CRLJ rules from PDFs with rule_set, rule_number, full_text  
+- `court_rules`: IRLJ/CRLJ/RPC rules from PDFs with rule_set, rule_number, full_text  
 - `wac`: WAC sections (placeholder, not yet populated)
 - FTS5 tables: `rcw_fts`, `court_rules_fts`, `wac_fts` for search functionality
 - Triggers maintain FTS indexes on insert/update/delete
@@ -78,12 +79,18 @@ Four main tables with Full-Text Search:
 - Extracts text and cleans formatting artifacts
 - Stores in `court_rules` table with rule_set, rule_number, rule_name, full_text
 
+**RPC Scraper** (`rpc-scraper.ts`):
+- Downloads RPC (Rules of Professional Conduct) PDFs from courts.wa.gov
+- Processes 60 RPC rules (1.1 through 8.5)
+- Extracts and cleans text from PDFs using pdfjs-dist
+- Stores in same `court_rules` table with rule_set='RPC'
+
 ### MCP Tools Implementation
 Tools defined in `src/index.ts` with parameter validation:
 - `get_rcw`: Direct citation lookup (e.g., "46.61.502")
-- `get_court_rule`: Retrieve court rules by rule set and number (handles both "60" and "60.0" formats)
-- `list_court_rules`: List all court rules with optional rule set filter
-- `search_laws`: FTS5-powered full-text search across RCW, WAC, and Court Rules
+- `get_court_rule`: Retrieve court rules by rule set and number (supports IRLJ, CRLJ, RPC)
+- `list_court_rules`: List all court rules with optional rule set filter (IRLJ, CRLJ, RPC)
+- `search_laws`: FTS5-powered full-text search across RCW, WAC, and Court Rules (including RPC)
 - `list_rcw_titles/chapters/sections`: Hierarchical browsing
 - `get_statistics`: Returns counts for all law types and last update time
 

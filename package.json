@@ -13,6 +13,7 @@
     "start": "node dist/index.js",
     "scrape:rcw": "tsx src/scraper/rcw-scraper.ts",
     "scrape:wac": "tsx src/scraper/wac-scraper.ts",
+    "scrape:rpc": "tsx src/scraper/rpc-scraper.ts",
     "init:db": "tsx src/database/init.ts",
     "update:laws": "tsx scripts/update-laws.ts",
     "test": "npx @modelcontextprotocol/inspector node dist/index.js"

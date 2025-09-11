@@ -62,14 +62,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_court_rule',
-        description: 'Retrieve the full text of a specific court rule (IRLJ, CRLJ, or RPC) by rule set and number',
+        description: 'Retrieve the full text of a specific court rule (IRLJ, CRLJ, RPC, or RALJ) by rule set and number',
         inputSchema: {
           type: 'object',
           properties: {
             ruleSet: {
               type: 'string',
-              description: 'Rule set (e.g., "IRLJ", "CRLJ", or "RPC")',
-              enum: ['IRLJ', 'CRLJ', 'RPC'],
+              description: 'Rule set (e.g., "IRLJ", "CRLJ", "RPC", or "RALJ")',
+              enum: ['IRLJ', 'CRLJ', 'RPC', 'RALJ'],
             },
             ruleNumber: {
               type: 'string',
@@ -87,8 +87,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             ruleSet: {
               type: 'string',
-              description: 'Optional: Filter by rule set (IRLJ, CRLJ, or RPC)',
-              enum: ['IRLJ', 'CRLJ', 'RPC'],
+              description: 'Optional: Filter by rule set (IRLJ, CRLJ, RPC, or RALJ)',
+              enum: ['IRLJ', 'CRLJ', 'RPC', 'RALJ'],
             },
           },
         },
